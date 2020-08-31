@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from '../../models/todo';
 import { TodoDataService } from '../../services/data/todo-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-todos',
@@ -9,22 +10,34 @@ import { TodoDataService } from '../../services/data/todo-data.service';
 })
 export class ListTodosComponent implements OnInit {
 
-  todos = [
-    // new Todo(1, 'description - 1', false, new Date()),
-    // new Todo(2, 'description - 2', false, new Date()),
-    // new Todo(3, 'description - 3', false, new Date()),
+  todos = []
+  message: string;
 
-  ]
-
-  constructor(private todoDataService: TodoDataService) { }
+  constructor(private todoDataService: TodoDataService, private router: Router) { }
 
   ngOnInit(): void {
+    this.refreshTodos();
+  }
+
+  refreshTodos() {
     this.todoDataService.fetchAllTodos("admin").subscribe(
       response => {
-        console.log(response);
         this.todos = response;
       }
     );
+  }
+
+  deleteTodo(id: number) {
+    this.todoDataService.deleteTodo('admin', id).subscribe(
+      response => {
+        this.refreshTodos();
+        this.message = "Delete Todo Succsess!";
+      }
+    );
+  }
+
+  saveTodo(id: number) {
+    this.router.navigate(['todos', id]);
   }
 
 }

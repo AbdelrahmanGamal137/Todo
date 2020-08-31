@@ -5,12 +5,14 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { ErrorComponent } from './components/error/error.component';
 import { ListTodosComponent } from './components/list-todos/list-todos.component';
 import {RoutGuardService}from './services/rout-guard.service';
+import { TodoComponent } from './components/todo/todo.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'todos', component: ListTodosComponent, canActivate: [RoutGuardService] },
+  { path: 'todos/:id', component: TodoComponent, canActivate: [RoutGuardService] },
   { path: 'welcome/:name', component: WelcomeComponent, canActivate: [RoutGuardService] },
   { path: '**', component: ErrorComponent }
 ];
